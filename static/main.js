@@ -9,22 +9,26 @@ $("#error").hide();
 var data = [];
 
 $(function() {
-
   // sanity check
   console.log( "ready!" );
 
   // image click
-  $(".img").click(function() {
+  $(".img").click(function(){
+    // removes the previous selected class
+    $('.active').removeClass('active');
+    // add active class to clicked picture
+    $(this).addClass("active");
+  });
+
+
+  // submit click
+  $("#submit").click(function() {
     // empty/hide results
     $("#results").empty();
     // $("#results-table").hide();
     $("#error").hide();
-    // removes the previous selected class
-    $('.active').removeClass('active')
-    // add active class to clicked picture
-    $(this).addClass("active")
     // grab image url
-    var image = $(this).attr("src")
+    var image = $(".active").attr("src")
     console.log(image)
 
     // show searching text

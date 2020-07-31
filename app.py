@@ -1,5 +1,5 @@
 import os
- 
+
 from flask import Flask, render_template, request, jsonify
 from flask import send_from_directory
 from bov_cbir import get_bovw,find_scene
@@ -16,14 +16,14 @@ INDEX = os.path.join(os.path.dirname(__file__), 'index.csv')
 app = Flask(__name__)
 
 
-embeddings = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/normalized_tf_idf_db.h5', 'r')
-db_embeddings = np.array(embeddings["embed"])
-cluster_centres = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/clusters.h5',"r")
-db_cluster_centres = np.array(cluster_centres["embed"])
-idf = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/idf.h5',"r")
-db_idf = np.array(idf["embed"])
-with open ('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/file_paths_db', 'rb') as fp:
-    db_fp = pickle.load(fp)
+# embeddings = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/normalized_tf_idf_db.h5', 'r')
+# db_embeddings = np.array(embeddings["embed"])
+# cluster_centres = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/clusters.h5',"r")
+# db_cluster_centres = np.array(cluster_centres["embed"])
+# idf = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/idf.h5',"r")
+# db_idf = np.array(idf["embed"])
+# with open ('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/file_paths_db', 'rb') as fp:
+#     db_fp = pickle.load(fp)
 
 def encode(x):
     return binascii.hexlify(x.encode('utf-8')).decode()
@@ -60,11 +60,13 @@ def search():
         image_url_encoded = request.form.get('img')
         image_url = decode(image_url_encoded.split('/')[-1])
         try:
-            ret_results,score = find_scene(image_url.split(),db_embeddings,db_fp,db_cluster_centres,db_idf)
-            query = io.imread(image_url)
-            for i in range(5): 
-                RESULTS_ARRAY.append(
-                        {"image": 'cdn/'+encode(ret_results[i]), "score": str(score[i])})
+            # ret_results,score = find_scene(image_url.split(),db_embeddings,db_fp,db_cluster_centres,db_idf)
+            # query = io.imread(image_url)
+            # for i in range(5):
+            #     RESULTS_ARRAY.append(
+            #             {"image": 'cdn/'+encode(ret_results[i]), "score": str(score[i])})
+            image_address = ['cdn/'+encode(i) for i in glob.glob('./static/images/*.png')]
+            RESULTS_ARRAY = {"image":image_address, "score":["0.8","0.7","0.9","0.6","0.5","0.8"]}
             return jsonify(results=(RESULTS_ARRAY))
 
         except:

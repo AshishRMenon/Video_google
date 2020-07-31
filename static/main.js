@@ -41,9 +41,9 @@ $(function() {
         console.log(result.results);
         var data = result.results
 
-		for (var i = 0; i < data.length; i++) {
-		  $("#results-table").append('<tr><th><a href="'+data[i].image+'"><img src="'+data[i].image+
-		    '" class="result-img"></a></th><th>'+data[i].score+'</th></tr>')
+		for (var i = 0; i < data.score.length; i++) {
+		  $("#results-table").append('<tr><th><a href="'+data.image[i]+'"><img src="'+data.image[i]+
+		    '" class="result-img"></a></th><th>'+data.score[i]+'</th></tr>')
 		};
       },
       // handle error

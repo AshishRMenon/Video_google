@@ -16,13 +16,13 @@ INDEX = os.path.join(os.path.dirname(__file__), 'index.csv')
 app = Flask(__name__)
 
 
-embeddings = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/normalized_tf_idf_db.h5', 'r')
+embeddings = h5py.File('/ssd_scratch/cvit/ashishmenon/embeddings/normalized_hist_tf_idf_db.h5', 'r')
 db_embeddings = np.array(embeddings["embed"])
-cluster_centres = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/clusters.h5',"r")
+cluster_centres = h5py.File('/ssd_scratch/cvit/ashishmenon/embeddings/clusters_hist.h5',"r")
 db_cluster_centres = np.array(cluster_centres["embed"])
-idf = h5py.File('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/idf.h5',"r")
+idf = h5py.File('/ssd_scratch/cvit/ashishmenon/embeddings/idf_hist.h5',"r")
 db_idf = np.array(idf["embed"])
-with open ('/ssd_scratch/cvit/ashishmenon/v_google_frame/embeddings/file_paths_db', 'rb') as fp:
+with open ('/ssd_scratch/cvit/ashishmenon/embeddings/file_paths_hist_db', 'rb') as fp:
     db_fp = pickle.load(fp)
 
 def encode(x):
@@ -37,7 +37,7 @@ def decode(x):
 def index():
     #image_names = os.listdir('/home/ashish95/Desktop/Desktop_files/ui_try/flask_testing_jup/static/images/')
     #image_address = ['images/' + name for name in image_names]
-    image_address_raw = glob.glob('./static/images/*.png')
+    image_address_raw = glob.glob('./static/images/*.tif')
     # image_address_raw = random.sample(image_address_raw,6)
     image_address = [encode(i) for i in image_address_raw]
     return render_template('index.html',images=image_address)
@@ -76,4 +76,4 @@ def search():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,port=int(os.environ.get('PORT', 6792)))
+    app.run(debug=True,port=int(os.environ.get('PORT', 6793)))

@@ -1,0 +1,27 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://unpkg.com/jcrop/dist/jcrop.css">
+	<script src="https://unpkg.com/jcrop"></script>
+</head>
+<body>
+	<img src="static/images/frame10.png" id="target">
+	<img src="blah" id="result">
+	<button type="button" name="button" id="sumbit" onclick="submit_fn()">SUBMIT</button>
+</body>
+<script>
+	var target = document.getElementById('target')
+	var result = document.getElementById('result')
+	const stage = Jcrop.attach('target');
+	function submit_fn() {
+		console.log("CLICKED");
+		console.log(stage.active.pos.x, stage.active.pos.y, stage.active.pos.w, stage.active.pos.h);
+		result.src = target.src
+		var tr_x = stage.active.pos.x+stage.active.pos.w
+		var tr_y = stage.active.pos.y
+		var bl_x = stage.active.pos.x
+		var bl_y = stage.active.pos.y+stage.active.pos.h
+		result.style = "position:absolute; clip: rect("+tr_y+"px,"+tr_x+"px,"+bl_y+"px,"+bl_x+"px);"
+
+	}
+</script>
+</html>
